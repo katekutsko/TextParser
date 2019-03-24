@@ -3,6 +3,8 @@ package by.epam.javatraining.kutsko.task4.model.entity;
 import java.util.HashMap;
 import java.util.Map;
 
+import by.epam.javatraining.kutsko.task4.util.parser.SentenceParser;
+
 public class Sentence extends ComplexTextUnit<SimpleTextUnit> {
 
 	public Sentence(Map<Integer, SimpleTextUnit> sentenceParts) {
@@ -22,6 +24,14 @@ public class Sentence extends ComplexTextUnit<SimpleTextUnit> {
 			sentence.getAllFragments().forEach((key, value) -> {
 				textFragments.put(key, value.clone());
 			});
+		}
+	}
+	
+	public Sentence(String sentence) {
+		super();
+		if (sentence != null) {
+			Sentence newSentence = new SentenceParser().create(sentence);
+			this.addElements(newSentence.getAllFragments());
 		}
 	}
 
