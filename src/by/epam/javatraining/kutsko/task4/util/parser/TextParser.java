@@ -1,5 +1,7 @@
 package by.epam.javatraining.kutsko.task4.util.parser;
 
+import java.util.List;
+
 import by.epam.javatraining.kutsko.task4.model.entity.Text;
 import by.epam.javatraining.kutsko.task4.model.entity.TextUnit;
 import by.epam.javatraining.kutsko.task4.util.validator.Validator;
@@ -18,10 +20,10 @@ public class TextParser extends AbstractParser {
 	public Text create(String textAsString) {
 
 		Text text = new Text();
-
+		
 		if (textAsString != null) {
-
-			String[] splittedText = split(textAsString, Parser.TEXT_DELIMETER);
+			
+			String[] splittedText = textAsString.split(Parser.TEXT_DELIMETER);
 			
 			for (String paragraphAsString : splittedText) {
 				
