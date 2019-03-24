@@ -1,5 +1,6 @@
 package by.epam.javatraining.kutsko.task4.util.parser;
 
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import by.epam.javatraining.kutsko.task4.model.entity.*;
@@ -11,9 +12,17 @@ import java.util.Map;
 
 public class SentenceParserTest {
 	
+	private SentenceParser parser;
+	
+	@BeforeClass
+	public void init() {
+		parser = new SentenceParser();
+	}
+	
 	@Test
 	public void testCreatingSentence() {
 		Map<Integer, SimpleTextUnit> map = new HashMap<>();
+		
 		map.put(0, new Word("This"));
 		map.put(1, new Word("is"));
 		map.put(2, new Word("a"));
@@ -21,7 +30,7 @@ public class SentenceParserTest {
 		map.put(4, new PunctuationMark("."));
 		Sentence expected = new Sentence(map);
 		
-		Sentence actual = new SentenceParser().create("This is a sentence.");
+		Sentence actual = parser.create("This is a sentence.");
 		
 		assertEquals(actual, expected);
 	}
@@ -31,7 +40,7 @@ public class SentenceParserTest {
 	public void testCreatingSentenceFromNull() {
 		Sentence expected = new Sentence();
 		
-		Sentence actual = new SentenceParser().create(null);
+		Sentence actual = parser.create(null);
 		
 		assertEquals(actual, expected);
 	}
@@ -40,7 +49,7 @@ public class SentenceParserTest {
 	public void testCreatingSentenceFronInvalidString() {
 		Sentence expected = new Sentence();
 		
-		Sentence actual = new SentenceParser().create("this is not a sentence.");
+		Sentence actual = parser.create("this is not a sentence.");
 		
 		assertEquals(actual, expected);
 	}
