@@ -86,9 +86,13 @@ public class WordTest {
 		assertEquals(actual, expected);
 	}
 	
-	@Test (expectedExceptions = CorruptParameterReferenceException.class)
+	@Test 
 	public void testSetInvalidContents() throws Exception {
+		Word expected = new Word("Word");
+		Word actual = new Word("Word");
 		
-		new Word().setContents(null);
+		actual.setContents(null);
+		
+		assertEquals(actual, expected);
 	}
 }
