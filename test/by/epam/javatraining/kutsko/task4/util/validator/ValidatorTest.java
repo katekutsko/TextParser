@@ -51,4 +51,11 @@ public class ValidatorTest {
 		Assert.assertEquals(actual, expected);
 	}
 	
+	@Test
+	public void testSentenceValidation() {
+		boolean expected = true;
+		boolean actual = Validator.validateAsSentence("This is a sentence.");
+		Assert.assertEquals(actual, expected);
+	}
+	
 }
