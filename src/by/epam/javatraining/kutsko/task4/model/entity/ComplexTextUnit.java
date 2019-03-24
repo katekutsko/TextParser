@@ -42,15 +42,13 @@ public abstract class ComplexTextUnit<T extends TextUnit> extends TextUnit {
 		return false;
 	}
 
-	// TODO public void remove();
-
 	public void clear() {
 		textFragments.clear();
 	}
 	
 	public TextUnit getElement(int index) throws NoSuchTextFragmentException {
 		
-		if (index >= 0 || index < textFragments.size()) {
+		if (index >= 0 && index < textFragments.size()) {
 			return textFragments.get(index);
 		} 
 		else {
@@ -59,8 +57,9 @@ public abstract class ComplexTextUnit<T extends TextUnit> extends TextUnit {
 	}
 	
 	public void replace(int index, TextUnit value) {
-		
-		textFragments.replace(index, value);
+		if (textFragments.containsKey(index)) {
+			textFragments.replace(index, value);
+		}
 	}
 	
 	public Map<Integer, TextUnit> getAllFragments() {
