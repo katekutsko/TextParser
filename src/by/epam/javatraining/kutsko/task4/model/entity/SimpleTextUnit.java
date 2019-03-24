@@ -16,12 +16,10 @@ public abstract class SimpleTextUnit extends TextUnit {
 		}
 	}
 
-	public void setContents(String string) throws CorruptParameterReferenceException {
+	public void setContents(String string) {
 		if (string != null) {
 			contents = string;
-		} else {
-			throw new CorruptParameterReferenceException("Reference to contents was null");
-		}
+		} 
 	}
 
 	@Override
@@ -66,6 +64,4 @@ public abstract class SimpleTextUnit extends TextUnit {
 			return false;
 		return true;
 	}
-	
-	
 }
