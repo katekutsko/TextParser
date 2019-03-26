@@ -1,45 +1,72 @@
 package by.epam.javatraining.kutsko.task4.util.parser;
 
-import java.util.List;
-
 import by.epam.javatraining.kutsko.task4.model.entity.Text;
 import by.epam.javatraining.kutsko.task4.model.entity.TextUnit;
 import by.epam.javatraining.kutsko.task4.util.validator.Validator;
 
 public class TextParser extends AbstractParser {
 
-	private final Parser<TextUnit> defaultParser;
-	private final Parser<TextUnit> additionalParser;
-
+	private static TextParser instance;
+	
 	{
-		defaultParser = new ParagraphParser();
-		additionalParser = new CodeBlockParser();
-		nextParser = defaultParser;
+		nextParser = TextPartParser.getInstance();
 	}
 
+//	public Text create(String textAsString) {
+//
+//		Text text = new Text();
+//
+//		if (textAsString != null) {
+//
+//			String[] splittedText = split(textAsString, TEXT_DELIMETER);
+//
+//			for (String paragraphAsString : splittedText) {
+//
+//				if (Validator.validateAsParagraph(paragraphAsString)) {
+//
+//					nextParser = defaultParser;
+//					text.add(nextParser.create(paragraphAsString));
+//
+//				} else if (Validator.validateAsCodeBlock(paragraphAsString)) {
+//
+//					nextParser = additionalParser;
+//					text.add(nextParser.create(paragraphAsString));
+//				}
+//			}
+//		}
+//		return text;
+//	}
+	
 	public Text create(String textAsString) {
-
+		
 		Text text = new Text();
 		
-		if (textAsString != null) {
+		if (textAsString != null) {	
 			
-			String[] splittedText = textAsString.split(Parser.TEXT_DELIMETER);
+			String[] splittedText = nextParser.split(textAsString, nextParser.getDelimeter());
 			
-			for (String paragraphAsString : splittedText) {
-				
-				if (Validator.validateAsParagraph(paragraphAsString)) {
-						
-						nextParser = defaultParser; 
-						text.add(nextParser.create(paragraphAsString));
-
-				} else if (Validator.validateAsCodeBlock(paragraphAsString)) {
-					
-					nextParser = additionalParser;
-					text.add(nextParser.create(paragraphAsString));
-				}
+			for (String s : splittedText) {
+				text.add(nextParser.create(s));
 			}
+			
+			return text;
 		}
-		return text;
+		return null;
+		
+	}
+
+	@Override
+	public String getDelimeter() {
+		return null;
+	}
+	
+	private TextParser() {}
+	
+	public static TextParser getInstance() {
+		if (instance == null) {
+			instance = new TextParser();
+		}
+		return instance;
 	}
 
 }

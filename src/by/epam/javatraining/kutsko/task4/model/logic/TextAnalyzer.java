@@ -6,16 +6,16 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 import by.epam.javatraining.kutsko.task4.model.entity.*;
-import by.epam.javatraining.kutsko.task4.model.exception.CorruptParameterReferenceException;
 import by.epam.javatraining.kutsko.task4.model.exception.NoSuchTextFragmentException;
 
 /**
  * Provides tools for text analyzing
  * 
  * @author Kutsko Kate
- * @version 1.0 21.03.19
+ * 21.03.19
  */
 public class TextAnalyzer {
 
@@ -23,6 +23,7 @@ public class TextAnalyzer {
 
 	static {
 		LOGGER = Logger.getRootLogger();
+		PropertyConfigurator.configure("log4j.properties");
 	}
 
 	public static String getAllWordsOfTextInAlphabeticOrder(Text text) {
@@ -130,8 +131,6 @@ public class TextAnalyzer {
 
 				} catch (NoSuchTextFragmentException e) {
 					LOGGER.info("Nonexistent text fragment was addressed");
-				} catch (CorruptParameterReferenceException e) {
-					LOGGER.info("Reference to parameter was null");
 				}
 			}
 			return buildString(sentenceList);
@@ -193,6 +192,7 @@ public class TextAnalyzer {
 
 						sentence.replace(previousFirstWordIndex, secondWord);
 						sentence.replace(previousSecondWordIndex, firstWord);
+						
 						if (i >= j) {
 							stop = true;
 						}
@@ -211,8 +211,6 @@ public class TextAnalyzer {
 
 				} catch (NoSuchTextFragmentException e) {
 					LOGGER.info("Nonexistent text fragment was addressed");
-				} catch (CorruptParameterReferenceException e) {
-					LOGGER.info("Reference to parameter was null");
 				}
 			}
 			return buildString(sentenceList);

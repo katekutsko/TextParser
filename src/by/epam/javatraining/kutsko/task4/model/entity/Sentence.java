@@ -26,7 +26,7 @@ public class Sentence extends ComplexTextUnit<SimpleTextUnit> {
 			});
 		}
 	}
-	
+
 	public Sentence(String sentence) {
 		super();
 		if (sentence != null) {
@@ -41,7 +41,6 @@ public class Sentence extends ComplexTextUnit<SimpleTextUnit> {
 		StringBuilder builder = new StringBuilder();
 
 		textFragments.forEach((key, value) -> {
-
 			int length = builder.length();
 
 			if (value.toString().matches("\\(")) {
@@ -56,11 +55,13 @@ public class Sentence extends ComplexTextUnit<SimpleTextUnit> {
 			}
 		});
 
-		builder.deleteCharAt(builder.length() - 1);
+		if (builder.length() != 0) {
+			builder.deleteCharAt(builder.length() - 1);
 
-		char last = builder.charAt(builder.length() - 1);
-		if (last != ':' && last != '.') {
-			builder.append(". ");
+			char last = builder.charAt(builder.length() - 1);
+			if (last != ':' && last != '.') {
+				builder.append(". ");
+			}
 		}
 		return builder.toString();
 	}

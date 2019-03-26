@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
 
 public class SentenceTest {
 	

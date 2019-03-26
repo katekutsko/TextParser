@@ -1,44 +1,46 @@
 package by.epam.javatraining.kutsko.task4.util.parser;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import by.epam.javatraining.kutsko.task4.model.entity.Sentence;
-import by.epam.javatraining.kutsko.task4.model.entity.SimpleTextUnit;
-import by.epam.javatraining.kutsko.task4.model.entity.TextUnit;
 import by.epam.javatraining.kutsko.task4.util.validator.Validator;
 
 public class SentenceParser extends AbstractParser {
 
-	
+	private static SentenceParser instance;
+	// private final static String SENTENCE_DELIMETER = "[^:.;]+";
+	// private final static String SENTENCE_DELIMETER = "\\.";
+	private final static String SENTENCE_DELIMETER = "[A-Z][\\w\\d\\p{Space}\\p{Punct}&&[^.:\n]]+\\S[.:] ?";
+
 	{
-		nextParser =  new AtomaryTextUnitParser();
+		nextParser = new AtomaryTextUnitParser();
 	}
+
 	@Override
 	public Sentence create(String sentence) {
 
-		Sentence newSentence = new Sentence();
-
+		Sentence newSentence = null;
+		
 		if (sentence != null && Validator.validateAsSentence(sentence)) {
+
+			newSentence = new Sentence();
 			
-			Pattern pattern = Pattern.compile(SENTENCE_REGEXP);
-			Matcher matcher = pattern.matcher(sentence);
-			List<String> sentenceFragments = new ArrayList<String>();
+			String[] splittedSentence = nextParser.split(sentence, nextParser.getDelimeter());
 
-			while (matcher.find()) {
-				sentenceFragments.add(matcher.group());
+			for (String sentenceFragment : splittedSentence) {
+				newSentence.add(nextParser.create(sentenceFragment));
 			}
-		
-			for (String sentenceFragment : sentenceFragments) {
-
-					newSentence.add(nextParser.create(sentenceFragment));
-				}
-
-			}
-		
+		}
 		return newSentence;
 	}
 
+	@Override
+	public String getDelimeter() {
+		return SENTENCE_DELIMETER;
+	}
+
+	public static SentenceParser getInstance() {
+		if (instance == null) {
+			instance = new SentenceParser();
+		}
+		return instance;
+	}
 }

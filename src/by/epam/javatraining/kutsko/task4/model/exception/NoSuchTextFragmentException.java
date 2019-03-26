@@ -1,6 +1,6 @@
 package by.epam.javatraining.kutsko.task4.model.exception;
 
-public class NoSuchTextFragmentException extends Exception {
+public class NoSuchTextFragmentException extends TextParserLogicalException {
 
 	public NoSuchTextFragmentException() {
 		super();

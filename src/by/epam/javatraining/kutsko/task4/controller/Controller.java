@@ -1,15 +1,13 @@
 package by.epam.javatraining.kutsko.task4.controller;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 import by.epam.javatraining.kutsko.task4.model.entity.Text;
-import by.epam.javatraining.kutsko.task4.model.exception.CorruptParameterReferenceException;
+import by.epam.javatraining.kutsko.task4.model.exception.FailedReadingFileException;
+import by.epam.javatraining.kutsko.task4.model.exception.InvalidFilePathException;
 import by.epam.javatraining.kutsko.task4.model.logic.TextAnalyzer;
-import by.epam.javatraining.kutsko.task4.util.parser.Parser;
+import by.epam.javatraining.kutsko.task4.util.parser.AbstractParser;
 import by.epam.javatraining.kutsko.task4.util.parser.TextParser;
 import by.epam.javatraining.kutsko.task4.util.reader.DataReader;
 
@@ -29,17 +27,19 @@ public class Controller {
 		
 		try {
 			
-			wholeText = DataReader.readFromFile(FILE_PATH);
+			wholeText = DataReader.readFromFile(null);
 
-		} catch (FileNotFoundException ex) {
+		} catch (InvalidFilePathException ex) {
 			LOGGER.error(ex.toString() + ": File was not found");
 
-		} catch (IOException e) {
+		} catch (FailedReadingFileException e) {
 			LOGGER.error(e.toString() + ": Failed to read properly");
 		}
-		Parser<Text> textParser = new TextParser();
+		AbstractParser textParser = TextParser.getInstance();
+		//textParser.setNextParser(new SentenceParser());
 		Text text = (Text) textParser.create(wholeText);
-		System.out.println(TextAnalyzer.reverseSentences(text));
+		System.out.println(text);
+		System.out.println(TextAnalyzer.reverseWordsInSentences(text));
 	}
 
 }

@@ -1,26 +1,42 @@
 package by.epam.javatraining.kutsko.task4.util.parser;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import by.epam.javatraining.kutsko.task4.model.entity.TextUnit;
+
 public abstract class AbstractParser implements Parser {
-	
+
 	protected Parser nextParser;
-	
-	@Override
+
 	public String[] split(String textElement, String delimeter) {
-		if (textElement != null) {
-			return textElement.split(delimeter);
+		
+//		if (textElement != null) {
+//			return textElement.split(delimeter);
+//		}
+//		return new String[0];
+		
+		Pattern pattern = Pattern.compile(delimeter);
+		Matcher matcher = pattern.matcher(textElement);
+		List<String> sentenceFragments = new ArrayList<String>();
+
+		while (matcher.find()) {
+			sentenceFragments.add(matcher.group());
 		}
-		return new String[0];
+
+		return sentenceFragments.toArray(new String[sentenceFragments.size()]);
+
 	}
 
-	@Override
 	public void setNextParser(Parser parser) {
 		nextParser = parser;
 	}
 
-	@Override
 	public Parser getNextParser() {
 		return nextParser;
 	}
 
-	
+	abstract public TextUnit create(String text);
 }

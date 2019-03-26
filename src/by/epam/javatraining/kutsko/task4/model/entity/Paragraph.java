@@ -38,9 +38,11 @@ public class Paragraph extends ComplexTextUnit<Sentence> {
 
 		StringBuilder builder = new StringBuilder();
 
+		builder.append("\t");
+		
 		textFragments.forEach((key, value) -> {
 
-			builder.append(value.toString());
+			builder.append(value.toString()).append(" ");
 
 		});
 

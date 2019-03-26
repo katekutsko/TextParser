@@ -4,10 +4,10 @@ import java.util.regex.Pattern;
 
 public class Validator {
 
-	public static final String PARAGRAPH_REGEXP = "\\t[A-Z]+[\\w+\\p{Punct}+\\s+]+[.:]";
-	public static final String PUNCTUATION_MARK_REGEXP = "\\p{Punct}+|\\t";
+	public static final String PARAGRAPH_REGEXP = "\\t[A-Z]+[\\w+\\p{Punct}+\\s+]+[.:] ?";
+	public static final String PUNCTUATION_MARK_REGEXP = "\\p{Punct}+";
 	public static final String CODE_BLOCK_REGEXP = "(^(.*\\n?).*\\{(?s).*\\})|(^\\s?.+ = .+;\\n*)+";
-	public static final String SENTENCE_REGEXP = "^[A-Z0-9]+[\\w\\s]+[\\p{Punct}]?$";
+	public static final String SENTENCE_REGEXP = "^\\t?[A-Z][\\w\\s\\p{Punct}]+[.:] ?$";
 	public static final String WORD_REGEXP = "\\w+";
 	private static Pattern paragraphPattern;
 	private static Pattern punctuationPattern;

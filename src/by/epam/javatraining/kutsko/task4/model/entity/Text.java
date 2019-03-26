@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class Text extends ComplexTextUnit<TextUnit> {
 
-	public static final String PARAGRAPH_SEPARATOR = "\n\n";
+	private static final String PARAGRAPH_SEPARATOR = "\n\n";
 	
 	public Text() {
 		super();
