@@ -27,7 +27,7 @@ public class Controller {
 		
 		try {
 			
-			wholeText = DataReader.readFromFile(null);
+			wholeText = DataReader.readFromFile(FILE_PATH);
 
 		} catch (InvalidFilePathException ex) {
 			LOGGER.error(ex.toString() + ": File was not found");
@@ -38,7 +38,7 @@ public class Controller {
 		AbstractParser textParser = TextParser.getInstance();
 		//textParser.setNextParser(new SentenceParser());
 		Text text = (Text) textParser.create(wholeText);
-		System.out.println(text);
+		//System.out.println(text);
 		System.out.println(TextAnalyzer.reverseWordsInSentences(text));
 	}
 

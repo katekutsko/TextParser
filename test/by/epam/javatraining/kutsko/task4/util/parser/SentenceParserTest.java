@@ -16,7 +16,7 @@ public class SentenceParserTest {
 	
 	@BeforeClass
 	public void init() {
-		parser = new SentenceParser();
+		parser = SentenceParser.getInstance();
 	}
 	
 	@Test

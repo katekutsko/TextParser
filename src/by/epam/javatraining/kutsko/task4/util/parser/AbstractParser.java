@@ -13,11 +13,6 @@ public abstract class AbstractParser implements Parser {
 
 	public String[] split(String textElement, String delimeter) {
 		
-//		if (textElement != null) {
-//			return textElement.split(delimeter);
-//		}
-//		return new String[0];
-		
 		Pattern pattern = Pattern.compile(delimeter);
 		Matcher matcher = pattern.matcher(textElement);
 		List<String> sentenceFragments = new ArrayList<String>();

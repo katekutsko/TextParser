@@ -1,7 +1,11 @@
 package by.epam.javatraining.kutsko.task4.model.logic;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -14,8 +18,7 @@ import by.epam.javatraining.kutsko.task4.model.exception.NoSuchTextFragmentExcep
 /**
  * Provides tools for text analyzing
  * 
- * @author Kutsko Kate
- * 21.03.19
+ * @author Kutsko Kate 21.03.19
  */
 public class TextAnalyzer {
 
@@ -53,7 +56,7 @@ public class TextAnalyzer {
 
 			StringBuilder builder = new StringBuilder();
 
-			char firstLetter = 'a';
+			char firstLetter = '0';
 			builder.append("\t");
 
 			for (String word : wordList) {
@@ -72,30 +75,13 @@ public class TextAnalyzer {
 		return "";
 	}
 
-	private static List<Sentence> getSentences(Text text) {
-
-		List<Sentence> sentenceList = new ArrayList<>();
-
-		text.getAllFragments().forEach((textBlockNumber, textBlock) -> {
-
-			if (textBlock instanceof Paragraph) {
-				Paragraph paragraph = (Paragraph) textBlock;
-
-				paragraph.getAllFragments().forEach((sentenceNumber, sentence) -> {
-					sentenceList.add((Sentence) sentence.clone());
-				});
-			}
-		});
-		return sentenceList;
-	}
-
-	private static String buildString(List<Sentence> sentenceList) {
+	private static String buildString(Map<Integer, Sentence> sentenceList) {
 
 		StringBuilder builder = new StringBuilder();
 
-		for (Sentence sentence : sentenceList) {
+		sentenceList.forEach((key, sentence) -> {
 			builder.append(sentence.toString()).append("\n");
-		}
+		});
 		return builder.toString();
 	}
 
@@ -103,36 +89,27 @@ public class TextAnalyzer {
 
 		if (text != null) {
 
-			List<Sentence> sentenceList = getSentences(text);
+			Map<Integer, Sentence> sentenceList = text.getSentences();
 
-			for (Sentence sentence : sentenceList) {
-
+			sentenceList.forEach((key, sentence) -> {
 				try {
 
 					int lastIndex = sentence.getAmountOFragments() - 1;
-					
-					Word firstWord = (Word) sentence.getElement(0);
-					firstWord.setContents(firstWord.toString().toLowerCase());
-					
-					TextUnit unit = sentence.getElement(lastIndex);
 
-					if (!(unit instanceof Word)) {
-						unit = sentence.getElement(--lastIndex);
-					}
-
-					Word lastWord = (Word) unit;
+					Word firstWord = (Word) sentence.getElement(0); 
+					Word lastWord = (Word) sentence.getElement(--lastIndex);
 
 					sentence.replace(0, lastWord);
 					sentence.replace(lastIndex, firstWord);
-
-					firstWord.setContents(
-							firstWord.toString().substring(0, 1).toUpperCase() + lastWord.toString().substring(1));
-					lastWord.setContents(lastWord.toString().toLowerCase());
+					
+					lastWord.setContents(
+							lastWord.toString().substring(0, 1).toUpperCase() + lastWord.toString().substring(1));
+					firstWord.setContents(firstWord.toString().toLowerCase());
 
 				} catch (NoSuchTextFragmentException e) {
 					LOGGER.info("Nonexistent text fragment was addressed");
 				}
-			}
+			});
 			return buildString(sentenceList);
 
 		} else {
@@ -145,75 +122,45 @@ public class TextAnalyzer {
 
 		if (text != null) {
 
-			List<Sentence> sentenceList = getSentences(text);
+			Map<Integer, Sentence> sentenceList = text.getSentences();
+			Map<Integer, Sentence> newSentenceList = new HashMap<>();
 
-			for (Sentence sentence : sentenceList) {
+			sentenceList.forEach((key, sentence) -> {
 
 				try {
 
-					TextUnit check = null;
-					Word firstWord = null;
-					Word secondWord = null;
+					Map<Integer, SimpleTextUnit> newSentence = new HashMap<>();
 
-					int previousFirstWordIndex = -1;
-					int previousSecondWordIndex = sentence.getAmountOFragments();
-					int middle = previousSecondWordIndex / 2;
+					List<Word> wordsList = new ArrayList<>(sentence.getAllWords().values());
 
-					boolean stop = false;
+					Collections.reverse(wordsList);
 
-					while (!stop) {
+					SimpleTextUnit check;
 
-						int i = previousFirstWordIndex;
-
-						while (i < middle) {
-							i++;
-							previousFirstWordIndex = i;
-							check = sentence.getElement(previousFirstWordIndex);
-
-							if (check instanceof Word) {
-								firstWord = (Word) check;
-								break;
-							}
+					for (int i = 0, j = 0; i < sentence.getAmountOFragments(); i++) {
+						if ((check = (SimpleTextUnit) sentence.getElement(i)) instanceof PunctuationMark) {
+							newSentence.put(i, check);
+						} else {
+							newSentence.put(i, wordsList.get(j));
+							j++;
 						}
 
-						int j = previousSecondWordIndex;
-
-						while (j >= middle) {
-
-							j--;
-							previousSecondWordIndex = j;
-							check = sentence.getElement(previousSecondWordIndex);
-
-							if (check instanceof Word) {
-								secondWord = (Word) check;
-								break;
-							}
-						}
-
-						sentence.replace(previousFirstWordIndex, secondWord);
-						sentence.replace(previousSecondWordIndex, firstWord);
-						
-						if (i >= j) {
-							stop = true;
-						}
 					}
-					firstWord = (Word) sentence.getElement(0);
+					Word firstWord = (Word) newSentence.get(0);
 
-					if ((check = sentence.getElement(sentence.getAmountOFragments() - 1)) instanceof Word) {
-						secondWord = (Word) check;
-					} else {
-						secondWord = (Word) sentence.getElement(sentence.getAmountOFragments() - 2);
-					}
+					Word lastWord = (Word) newSentence.get(newSentence.size() - 2);
 
 					firstWord.setContents(
 							firstWord.toString().substring(0, 1).toUpperCase() + firstWord.toString().substring(1));
-					secondWord.setContents(secondWord.toString().toLowerCase());
-
+					lastWord.setContents(lastWord.toString().toLowerCase());
+					
+					newSentenceList.put(newSentenceList.size(), new Sentence(newSentence));
+					
 				} catch (NoSuchTextFragmentException e) {
 					LOGGER.info("Nonexistent text fragment was addressed");
 				}
-			}
-			return buildString(sentenceList);
+			});
+			return buildString(newSentenceList);
 		} else {
 			LOGGER.warn("Reference to text was null");
 		}

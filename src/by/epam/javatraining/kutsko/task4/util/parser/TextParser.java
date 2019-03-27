@@ -11,31 +11,6 @@ public class TextParser extends AbstractParser {
 	{
 		nextParser = TextPartParser.getInstance();
 	}
-
-//	public Text create(String textAsString) {
-//
-//		Text text = new Text();
-//
-//		if (textAsString != null) {
-//
-//			String[] splittedText = split(textAsString, TEXT_DELIMETER);
-//
-//			for (String paragraphAsString : splittedText) {
-//
-//				if (Validator.validateAsParagraph(paragraphAsString)) {
-//
-//					nextParser = defaultParser;
-//					text.add(nextParser.create(paragraphAsString));
-//
-//				} else if (Validator.validateAsCodeBlock(paragraphAsString)) {
-//
-//					nextParser = additionalParser;
-//					text.add(nextParser.create(paragraphAsString));
-//				}
-//			}
-//		}
-//		return text;
-//	}
 	
 	public Text create(String textAsString) {
 		

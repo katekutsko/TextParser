@@ -6,14 +6,14 @@ import by.epam.javatraining.kutsko.task4.util.validator.Validator;
 public class SentenceParser extends AbstractParser {
 
 	private static SentenceParser instance;
-	// private final static String SENTENCE_DELIMETER = "[^:.;]+";
-	// private final static String SENTENCE_DELIMETER = "\\.";
 	private final static String SENTENCE_DELIMETER = "[A-Z][\\w\\d\\p{Space}\\p{Punct}&&[^.:\n]]+\\S[.:] ?";
 
 	{
 		nextParser = new AtomaryTextUnitParser();
 	}
 
+	private SentenceParser() {}
+	
 	@Override
 	public Sentence create(String sentence) {
 

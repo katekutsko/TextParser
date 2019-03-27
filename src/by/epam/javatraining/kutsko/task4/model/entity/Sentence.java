@@ -29,10 +29,25 @@ public class Sentence extends ComplexTextUnit<SimpleTextUnit> {
 
 	public Sentence(String sentence) {
 		super();
+
 		if (sentence != null) {
-			Sentence newSentence = new SentenceParser().create(sentence);
+
+			Sentence newSentence = SentenceParser.getInstance().create(sentence);
 			this.addElements(newSentence.getAllFragments());
 		}
+	}
+
+	public Map<Integer, Word> getAllWords() {
+
+		Map<Integer, Word> words = new HashMap<>();
+
+		textFragments.forEach((wordNumber, word) -> {
+
+			if (word instanceof Word) {
+				words.put(wordNumber, (Word) word.clone());
+			}
+		});
+		return words;
 	}
 
 	@Override
